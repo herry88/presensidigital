@@ -2,23 +2,23 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class LoginHelper {
-  String url = 'urllocalhost:8001/api/login';
+  // String url = 'https://backendapilaravel-app.herokuapp.com/api/login';
 
   var status;
   loginData(String email, String password) async {
     var response = await http.post(
-      Uri.parse(url),
+      Uri.parse('https://backendapilaravel-app.herokuapp.com/api/login'),
       headers: {'Accept': 'application/json'},
-      body: {'email': email, 'password': password},
+      body: {'email': '$email', 'password': '$password'},
     );
     status = response.body.contains('error');
-    var data = jsonDecode(response.body);
+    var data = json.decode(response.body);
     print(status);
     if (status) {
       // return data;
-      print('data: ${data['error']}');
+      print(data.error);
     } else {
-      print('data:${data['status']}');
+      print(data.status);
     }
   }
 }

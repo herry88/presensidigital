@@ -18,10 +18,25 @@ class _LoginPagesState extends State<LoginPages> {
   LoginHelper _loginHelper = LoginHelper();
   String msgStatus = '';
 
-  _onPressed(){
+  _onPressed() {
     setState(() {
-      if(_emailController.text.trim().toLowerCase().isEmpty && _passwordController.text.trim().toLowerCase().isEmpty){
-        _loginHelper.loginData(_emailController.text.trim().toLowerCase(), _passwordController.text.trim().toLowerCase());
+      if (_emailController.text.trim().toLowerCase().isEmpty &&
+          _passwordController.text.trim().toLowerCase().isEmpty) {
+        _loginHelper
+            .loginData(_emailController.text.trim().toLowerCase(),
+                _passwordController.text.trim().toLowerCase())
+            .whenComplete(() {
+          if (_loginHelper.status) {
+            print(" Check Email atau Password");
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(),
+              ),
+            );
+          }
+        });
       }
     });
   }
@@ -134,6 +149,8 @@ class _LoginPagesState extends State<LoginPages> {
                               child: ButtonWidget(
                                 onpressed: () {
                                   //check function
+                                  _onPressed();
+
                                 },
                                 title: 'Login',
                               ),
