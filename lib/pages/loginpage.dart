@@ -14,52 +14,6 @@ class LoginPages extends StatefulWidget {
 }
 
 class _LoginPagesState extends State<LoginPages> {
-  //key pada form
-  final _key = GlobalKey<FormState>();
-
-  //variabel untuk menampung inputan
-  late String email, password;
-
-  bool autoValidate = false;
-  bool isLoading = false;
-
-  //function cek form
-  check() {
-    final form = _key.currentState;
-    if (form!.validate()) {
-      login();
-      print('email: $email, password: $password');
-    } else {
-      setState(() {
-        autoValidate = true;
-      });
-    }
-  }
-
-  //functionlogin
-  login() async {
-    setState(() {
-      isLoading = true;
-    });
-    var url = "http://192.168.100.90:8001/api/login";
-
-    final response = await http.post(Uri.parse(url), body: {
-      'email': '$email'.toString(),
-      'password': '$password'.toString()
-    });
-    var res = jsonDecode(response.body);
-    print(res);
-    setState(() {
-      isLoading = false;
-    });
-    if (response.statusCode == 200) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
-    } else {
-      print(res['msg']);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +44,6 @@ class _LoginPagesState extends State<LoginPages> {
                   right: 10.0,
                 ),
                 child: Form(
-                  key: _key,
                   child: Card(
                     elevation: 3.0,
                     shape: RoundedRectangleBorder(
@@ -136,19 +89,6 @@ class _LoginPagesState extends State<LoginPages> {
                               horizontal: 30.0,
                             ),
                             child: TextFormField(
-                              onSaved: (data) => email = data!,
-                              autovalidateMode: autoValidate
-                                  ? AutovalidateMode.always
-                                  : AutovalidateMode.disabled,
-                              validator: (input) {
-                                if (input!.isEmpty) {
-                                  return 'Email tidak boleh kosong';
-                                }
-                                if (!input.contains('@')) {
-                                  return 'Email tidak valid';
-                                }
-                                return null;
-                              },
                               decoration: InputDecoration(
                                 labelText: 'Email',
                               ),
@@ -160,19 +100,6 @@ class _LoginPagesState extends State<LoginPages> {
                               horizontal: 30.0,
                             ),
                             child: TextFormField(
-                              onSaved: (data) => password = data!,
-                              autovalidateMode: autoValidate
-                                  ? AutovalidateMode.always
-                                  : AutovalidateMode.disabled,
-                              validator: (input) {
-                                if (input!.isEmpty) {
-                                  return 'Password tidak boleh kosong';
-                                }
-                                if (input.length < 8) {
-                                  return 'Password minimal 8 karakter';
-                                }
-                                return null;
-                              },
                               obscureText: true,
                               decoration: const InputDecoration(
                                 labelText: 'Password',
@@ -190,7 +117,6 @@ class _LoginPagesState extends State<LoginPages> {
                                 child: ButtonWidget(
                                   onpressed: () {
                                     //check function
-                                    check();
                                   },
                                   title: 'Login',
                                 ),
@@ -204,21 +130,6 @@ class _LoginPagesState extends State<LoginPages> {
                 ),
               ),
             ),
-          ),
-          Center(
-            child: isLoading
-                ? Column(
-                    children: [
-                      CircularProgressIndicator(),
-                      Text(
-                        "Mohon Tunggu ...",
-                        style: TextStyle(color: Colors.amber),
-                      ),
-                    ],
-                  )
-                : SizedBox(
-                    height: 0,
-                  ),
           ),
         ],
       ),
