@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:presensidigital/helper/loginhelper.dart';
-import 'package:presensidigital/widgets/button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
 
@@ -12,23 +14,35 @@ class LoginPages extends StatefulWidget {
 }
 
 class _LoginPagesState extends State<LoginPages> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+  final _formKey = GlobalKey<FormState>();
+  var email, password;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _secureText = true;
 
-  LoginHelper _loginHelper = LoginHelper();
-  String msgStatus = '';
-
-  _onPressed(){
+  showHide() {
     setState(() {
-      if(_emailController.text.trim().toLowerCase().isEmpty && _passwordController.text.trim().toLowerCase().isEmpty){
-        _loginHelper.loginData(_emailController.text.trim().toLowerCase(), _passwordController.text.trim().toLowerCase());
-      }
+      _secureText = !_secureText;
     });
+  }
+
+  _showMsg(msg) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {
+          // Some code to undo the change!
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.amberAccent[100],
       body: Stack(
         children: [
@@ -99,13 +113,19 @@ class _LoginPagesState extends State<LoginPages> {
                             vertical: 10.0,
                             horizontal: 30.0,
                           ),
-                          child: TextField(
-                            controller: _emailController,
+                          child: TextFormField(
+                            cursorColor: Colors.blue,
+                            keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                              labelText: 'Email',
-                              hintText: 'Masukkan Email',
-                              icon: Icon(Icons.email),
+                              hintText: "Email",
                             ),
+                            validator: (emailValue) {
+                              if (emailValue!.isEmpty) {
+                                return 'Please enter your email';
+                              }
+                              email = emailValue;
+                              return null;
+                            },
                           ),
                         ),
                         Padding(
@@ -113,14 +133,26 @@ class _LoginPagesState extends State<LoginPages> {
                             vertical: 10.0,
                             horizontal: 30.0,
                           ),
-                          child: TextField(
-                            controller: _passwordController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Password',
-                              hintText: 'Masukkan Password',
-                              icon: Icon(Icons.lock),
+                          child: TextFormField(
+                            cursorColor: Colors.blue,
+                            keyboardType: TextInputType.text,
+                            obscureText: _secureText,
+                            decoration: InputDecoration(
+                              hintText: "Password",
+                              suffixIcon: IconButton(
+                                onPressed: showHide,
+                                icon: Icon(_secureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
+                              ),
                             ),
+                            validator: (passwordValue) {
+                              if (passwordValue!.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              password = passwordValue;
+                              return null;
+                            },
                           ),
                         ),
                         Row(
@@ -129,13 +161,36 @@ class _LoginPagesState extends State<LoginPages> {
                             Padding(
                               padding: const EdgeInsets.only(
                                 left: 30.0,
-                                top: 10.0,
+                                top: 40.0,
                               ),
-                              child: ButtonWidget(
-                                onpressed: () {
-                                  //check function
+                              child: ElevatedButton(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 18, vertical: 10),
+                                  child: Text(
+                                    _isLoading ? 'Proccessing..' : 'Login',
+                                    textDirection: TextDirection.ltr,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18.0,
+                                      decoration: TextDecoration.none,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.blue,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      30.0,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _login();
+                                  }
                                 },
-                                title: 'Login',
                               ),
                             ),
                           ],
@@ -150,5 +205,32 @@ class _LoginPagesState extends State<LoginPages> {
         ],
       ),
     );
+  }
+
+  void _login() async {
+    setState(() {
+      _isLoading = true;
+    });
+    var data = {'email': email, 'password': password};
+
+    var res = await LoginHelper().auth(data, '/login');
+    var body = json.decode(res.body);
+    if (body['success']) {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', json.encode(body['token']));
+      localStorage.setString('user', json.encode(body['user']));
+      Navigator.pushReplacement(
+        context,
+        new MaterialPageRoute(
+          builder: (context) => HomePage(),
+        ),
+      );
+    } else {
+      _showMsg(body['message']);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

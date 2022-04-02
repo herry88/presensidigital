@@ -1,24 +1,21 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class LoginHelper {
-  String url = 'urllocalhost:8001/api/login';
+  final String _url = 'https://backendapilaravel-app.herokuapp.com/api/login';
+  // late String localStorage;
+  var token;
 
-  var status;
-  loginData(String email, String password) async {
-    var response = await http.post(
-      Uri.parse(url),
-      headers: {'Accept': 'application/json'},
-      body: {'email': email, 'password': password},
-    );
-    status = response.body.contains('error');
-    var data = jsonDecode(response.body);
-    print(status);
-    if (status) {
-      // return data;
-      print('data: ${data['error']}');
-    } else {
-      print('data:${data['status']}');
-    }
+  auth(data, apiUrl) async {
+    var fullUrl = _url + apiUrl;
+    return await http.post(Uri.parse(fullUrl),
+        body: jsonEncode(data), headers: _setHeaders());
   }
+
+  _setHeaders() => {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
 }
