@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:presensidigital/helper/loginhelper.dart';
-import 'package:presensidigital/widgets/button.dart';
 
 import 'home.dart';
 
@@ -18,7 +17,7 @@ class _LoginPagesState extends State<LoginPages> {
   LoginHelper _loginHelper = LoginHelper();
   String msgStatus = '';
 
-  _onPressed() {
+  void _onPressed() {
     setState(() {
       if (_emailController.text.trim().toLowerCase().isEmpty &&
           _passwordController.text.trim().toLowerCase().isEmpty) {
@@ -26,7 +25,7 @@ class _LoginPagesState extends State<LoginPages> {
             .loginData(_emailController.text.trim().toLowerCase(),
                 _passwordController.text.trim().toLowerCase())
             .whenComplete(() {
-          if (_loginHelper.status) {
+          if (_loginHelper.status != null) {
             print(" Check Email atau Password");
           } else {
             Navigator.push(
@@ -39,6 +38,15 @@ class _LoginPagesState extends State<LoginPages> {
         });
       }
     });
+  }
+
+  void _klik() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomePage(),
+      ),
+    );
   }
 
   @override
@@ -144,15 +152,11 @@ class _LoginPagesState extends State<LoginPages> {
                             Padding(
                               padding: const EdgeInsets.only(
                                 left: 30.0,
-                                top: 10.0,
+                                top: 40.0,
                               ),
-                              child: ButtonWidget(
-                                onpressed: () {
-                                  //check function
-                                  _onPressed();
-
-                                },
-                                title: 'Login',
+                              child: ElevatedButton(
+                                onPressed: _onPressed,
+                                child: Text('Login'),
                               ),
                             ),
                           ],
