@@ -88,7 +88,7 @@ class _LoginPagesState extends State<LoginPages> {
                               vertical: 10.0,
                               horizontal: 30.0,
                             ),
-                            child: TextFormField(
+                            child: TextField(
                               decoration: InputDecoration(
                                 labelText: 'Email',
                               ),
@@ -99,7 +99,7 @@ class _LoginPagesState extends State<LoginPages> {
                               vertical: 10.0,
                               horizontal: 30.0,
                             ),
-                            child: TextFormField(
+                            child: TextField(
                               obscureText: true,
                               decoration: const InputDecoration(
                                 labelText: 'Password',
