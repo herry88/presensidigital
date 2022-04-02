@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'pages/loginpage.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -9,8 +11,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return MaterialApp(
+      title: 'presensi demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: LoginPages(),
     );
   }
 }
