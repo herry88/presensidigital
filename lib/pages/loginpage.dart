@@ -31,8 +31,8 @@ class _LoginPagesState extends State<LoginPages> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(msg),
-            // content: Text('Check your email or password'),
+            title: Text('Judul'),
+            content: Text('Check your connection'),
             actions: <Widget>[
               new TextButton(
                 child: new Text(
@@ -222,8 +222,9 @@ class _LoginPagesState extends State<LoginPages> {
       'password': password,
     };
 
-    var res = await LoginHelper().auth(data, '/login');
+    var res = await LoginHelper().auth(data, context);
     var body = json.decode(res.body);
+    print(body);
     if (body['success'] == true) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', json.encode(body['token']));
