@@ -34,8 +34,8 @@ class _CheckAuthState extends State<CheckAuth> {
 
   @override
   void initState() {
-    _checkIfLoggedIn();
     super.initState();
+    _checkIfLoggedIn();
   }
 
   void _checkIfLoggedIn() async {

@@ -27,16 +27,24 @@ class _LoginPagesState extends State<LoginPages> {
   }
 
   _showMsg(msg) {
-    final snackBar = SnackBar(
-      content: Text(msg),
-      action: SnackBarAction(
-        label: 'Close',
-        onPressed: () {
-          // Some code to undo the change!
-        },
-      ),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(msg),
+            // content: Text('Check your email or password'),
+            actions: <Widget>[
+              new TextButton(
+                child: new Text(
+                  'Close',
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -187,9 +195,7 @@ class _LoginPagesState extends State<LoginPages> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    _login();
-                                  }
+                                  _login();
                                 },
                               ),
                             ),
@@ -211,22 +217,26 @@ class _LoginPagesState extends State<LoginPages> {
     setState(() {
       _isLoading = true;
     });
-    var data = {'email': email, 'password': password};
+    var data = {
+      'email': email,
+      'password': password,
+    };
 
     var res = await LoginHelper().auth(data, '/login');
     var body = json.decode(res.body);
-    if (body['success']) {
+    if (body['success'] == true) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', json.encode(body['token']));
       localStorage.setString('user', json.encode(body['user']));
       Navigator.pushReplacement(
         context,
-        new MaterialPageRoute(
+        MaterialPageRoute(
           builder: (context) => HomePage(),
         ),
       );
     } else {
       _showMsg(body['message']);
+      print(body['message']);
     }
 
     setState(() {

@@ -7,6 +7,8 @@ class LoginHelper {
   // late String localStorage;
   var token;
 
+  
+
   auth(data, apiUrl) async {
     var fullUrl = _url + apiUrl;
     return await http.post(Uri.parse(fullUrl),
