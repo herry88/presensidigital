@@ -1,6 +1,6 @@
 {
-    "name": "presensidigital",
-    "short_name": "presensidigital",
+    "name": "presensi",
+    "short_name": "presensi",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
