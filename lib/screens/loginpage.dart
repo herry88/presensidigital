@@ -127,7 +127,7 @@ class _LoginPagesState extends State<LoginPages> {
                             height: 15,
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding:const EdgeInsets.symmetric(
                               vertical: 10,
                               horizontal: 30,
                             ),
