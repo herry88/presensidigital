@@ -1,7 +1,9 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({ Key? key }) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -10,8 +12,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('HomePage'),
+    return Scaffold(
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(bottom: 5.0),
+            child: Text(
+              'Halaman Homepage',
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
