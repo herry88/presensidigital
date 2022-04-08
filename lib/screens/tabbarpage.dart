@@ -1,7 +1,10 @@
+import 'dart:html';
+
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:presensi/screens/profile.dart';
 
+import '../components/allwidget.dart';
 import 'about.dart';
 import 'homepage.dart';
 
@@ -36,6 +39,7 @@ class _TabbarPageState extends State<TabbarPage> {
           ),
         ),
       ),
+      
       body: SizedBox.expand(
         child: PageView(
           controller: _pageController,
@@ -46,29 +50,40 @@ class _TabbarPageState extends State<TabbarPage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavyBar(
-        // showSelectedLabels: false,
-        // showUnselectedLabels: false,
-        selectedIndex: _index,
-        onItemSelected: (index) => setState(() {
-          _index = index;
-          _pageController.jumpToPage(index);
-        }),
-        items: [
-          BottomNavyBarItem(
-            icon: const Icon(Icons.home),
-            title: _title[_index],
-          ),
-          BottomNavyBarItem(
-            icon: const Icon(Icons.person),
-            title: _title[_index],
-          ),
-          BottomNavyBarItem(
-            icon: const Icon(Icons.person),
-            title: _title[_index],
-          ),
-        ],
-      ),
+     bottomNavigationBar: bottomBar(),
     );
   }
+
+  //bottomWidget
+  Widget bottomBar() {
+    return BottomNavyBar(
+      selectedIndex: _index,
+      onItemSelected: (_index) {
+        setState(() {
+          _index = _index;
+        });
+        _pageController.jumpToPage(_index);
+      },
+      items: [
+      BottomNavyBarItem(
+        icon: Icon(Icons.home),
+        title: Text('Home'),
+        activeColor: Colors.amber,
+      ),
+      BottomNavyBarItem(
+        icon: Icon(Icons.home),
+        title: Text('Home'),
+        activeColor: Colors.amber,
+      ),
+      BottomNavyBarItem(
+        icon: Icon(Icons.home),
+        title: Text('Home'),
+        activeColor: Colors.amber,
+      ),
+    ],);
+  }
+
+ 
+
+ 
 }
