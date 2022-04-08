@@ -1,3 +1,4 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:presensi/screens/profile.dart';
 
@@ -26,49 +27,48 @@ class _TabbarPageState extends State<TabbarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            _title[_index],
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+      appBar: AppBar(
+        title: Text(
+          _title[_index],
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        body: SizedBox.expand(
-          child: PageView(
-            controller: _pageController,
-            children: [
-              HomePage(),
-              AboutPage(),
-              ProfilePage(),
-            ],
-          ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          currentIndex: _index,
-          onTap: (index) {
-            _pageController.jumpToPage(index);
-            setState(() {
-              _index = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.home),
-              tooltip: _title[_index],
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.info),
-              tooltip: _title[_index],
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.person),
-              tooltip: _title[_index],
-            ),
+      ),
+      body: SizedBox.expand(
+        child: PageView(
+          controller: _pageController,
+          children: [
+            HomePage(),
+            AboutPage(),
+            ProfilePage(),
           ],
-        ));
+        ),
+      ),
+      bottomNavigationBar: BottomNavyBar(
+        // showSelectedLabels: false,
+        // showUnselectedLabels: false,
+        selectedIndex: _index,
+        onItemSelected: (index) => setState(() {
+          _index = index;
+          _pageController.jumpToPage(index);
+        }),
+        items: [
+          BottomNavyBarItem(
+            icon: const Icon(Icons.home),
+            title: _title[_index],
+          ),
+          BottomNavyBarItem(
+            icon: const Icon(Icons.person),
+            title: _title[_index],
+          ),
+          BottomNavyBarItem(
+            icon: const Icon(Icons.person),
+            title: _title[_index],
+          ),
+        ],
+      ),
+    );
   }
 }
