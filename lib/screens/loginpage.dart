@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:presensi/screens/tabbarpage.dart';
 import 'dart:convert';
 
-import 'homepage.dart';
 
 class LoginPages extends StatefulWidget {
   const LoginPages({Key? key}) : super(key: key);
@@ -14,6 +14,7 @@ class LoginPages extends StatefulWidget {
 class _LoginPagesState extends State<LoginPages> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  
   final _key = GlobalKey<FormState>();
   bool autoValidate = false;
   bool isLoading = false;
@@ -36,9 +37,11 @@ class _LoginPagesState extends State<LoginPages> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(),
+            builder: (context) => TabbarPage(),
           ),
         );
+      } else {
+        print('Halaman User');
       }
     } else {
       print('email or password failed');
@@ -127,7 +130,7 @@ class _LoginPagesState extends State<LoginPages> {
                             height: 15,
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               vertical: 10,
                               horizontal: 30,
                             ),
