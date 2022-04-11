@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:presensi/screens/tabbarpage.dart';
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LoginPages extends StatefulWidget {
   const LoginPages({Key? key}) : super(key: key);
@@ -12,6 +14,7 @@ class LoginPages extends StatefulWidget {
 }
 
 class _LoginPagesState extends State<LoginPages> {
+  late String token;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   
@@ -33,6 +36,7 @@ class _LoginPagesState extends State<LoginPages> {
     });
     var res = json.decode(response.body);
     if (response.statusCode == 200) {
+      savePref(res['data']['name'], res['user']['name']);
       if (res['user']['status'] == '1') {
         Navigator.pushReplacement(
           context,
@@ -62,6 +66,27 @@ class _LoginPagesState extends State<LoginPages> {
     }
   }
 
+  savePref(String token, String email) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      preferences.setString("name", token);
+      preferences.setString("email", emailController.text);
+     
+    });
+  }
+
+  getPref() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    token = pref.getString('name')!;
+    if(token != null){
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TabbarPage(),
+        ),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

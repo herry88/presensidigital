@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:presensi/screens/profile.dart';
@@ -39,7 +37,6 @@ class _TabbarPageState extends State<TabbarPage> {
           ),
         ),
       ),
-      
       body: SizedBox.expand(
         child: PageView(
           controller: _pageController,
@@ -50,7 +47,7 @@ class _TabbarPageState extends State<TabbarPage> {
           ],
         ),
       ),
-     bottomNavigationBar: bottomBar(),
+      bottomNavigationBar: bottomBar(),
     );
   }
 
@@ -65,25 +62,22 @@ class _TabbarPageState extends State<TabbarPage> {
         _pageController.jumpToPage(_index);
       },
       items: [
-      BottomNavyBarItem(
-        icon: Icon(Icons.home),
-        title: Text('Home'),
-        activeColor: Colors.amber,
-      ),
-      BottomNavyBarItem(
-        icon: Icon(Icons.home),
-        title: Text('Home'),
-        activeColor: Colors.amber,
-      ),
-      BottomNavyBarItem(
-        icon: Icon(Icons.home),
-        title: Text('Home'),
-        activeColor: Colors.amber,
-      ),
-    ],);
+        BottomNavyBarItem(
+          icon: Icon(Icons.home),
+          title: Text('Home'),
+          activeColor: Colors.amber,
+        ),
+        BottomNavyBarItem(
+          icon: Icon(Icons.home),
+          title: Text('Home'),
+          activeColor: Colors.amber,
+        ),
+        BottomNavyBarItem(
+          icon: Icon(Icons.home),
+          title: Text('Home'),
+          activeColor: Colors.amber,
+        ),
+      ],
+    );
   }
-
- 
-
- 
 }
