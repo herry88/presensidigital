@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.amber,
-        primaryColor: Color(0xFFFFC355),
+        primaryColor: const Color(0xFFFFC355),
       ),
       home: email == null ?  LoginPages() : TabbarPage()
     );

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:presensi/model/usermodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,14 +23,25 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     getPref();
-    
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'email: $email',
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

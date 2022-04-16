@@ -2,7 +2,6 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:presensi/screens/profile.dart';
 
-import '../components/allwidget.dart';
 import 'about.dart';
 import 'homepage.dart';
 
@@ -68,13 +67,13 @@ class _TabbarPageState extends State<TabbarPage> {
           activeColor: Colors.amber,
         ),
         BottomNavyBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Home'),
+          icon: Icon(Icons.info),
+          title: Text('Info'),
           activeColor: Colors.amber,
         ),
         BottomNavyBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Home'),
+          icon: Icon(Icons.person),
+          title: Text('Person'),
           activeColor: Colors.amber,
         ),
       ],
