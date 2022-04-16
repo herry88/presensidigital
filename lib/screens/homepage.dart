@@ -28,15 +28,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     getPref();
-    getPostByUser();
+    
     super.initState();
   }
 
-  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Container(
-      
-    ));
+    return Scaffold(
+      body: Container(),
+    );
   }
 }
