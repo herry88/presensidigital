@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:presensi/provider/provider_timer.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:qrscan/qrscan.dart' as Scanner;
+import 'package:http/http.dart' as http;
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -15,7 +18,21 @@ class _AboutPageState extends State<AboutPage> {
   String time = "00:00:01";
   String now = '';
   bool? _isMasuk; // true = masuk, false = pulang
-  // Timer timer;
+  Timer? timer;
+
+  //function ScanQr
+  scanQr() async {
+    String? scanResult = await Scanner.scan();
+    setState(() {
+      scan = scanResult!;
+    });
+  }
+
+  @override
+  void initState() {
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) => getTime());
+    super.initState();
+  }
 
   getTime() {
     DateTime now = DateTime.now();
@@ -53,6 +70,48 @@ class _AboutPageState extends State<AboutPage> {
               ),
               textAlign: TextAlign.center,
             ),
+          ),
+          SizedBox(height: 10),
+          Text(
+            formatDate,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          SizedBox(height: 20),
+          Text('Pilih Jenis Presensi'),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  //scanQr
+                },
+                child: const Text(
+                  'In',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.redAccent,
+                ),
+                onPressed: () {},
+                child: const Text(
+                  'out',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
