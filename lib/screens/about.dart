@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:presensi/provider/provider_timer.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:qrscan/qrscan.dart' as Scanner;
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart' as http;
 
 class AboutPage extends StatefulWidget {
@@ -22,9 +22,14 @@ class _AboutPageState extends State<AboutPage> {
 
   //function ScanQr
   scanQr() async {
-    String? scanResult = await Scanner.scan();
+    String? scanResult = await FlutterBarcodeScanner.scanBarcode(
+      '#ff6666',
+      'Cancel',
+      true,
+      ScanMode.QR,
+    );
     setState(() {
-      scan = scanResult!;
+      scan = scanResult;
     });
   }
 
@@ -88,6 +93,7 @@ class _AboutPageState extends State<AboutPage> {
               ElevatedButton(
                 onPressed: () {
                   //scanQr
+                  scanQr();
                 },
                 child: const Text(
                   'In',
@@ -103,7 +109,9 @@ class _AboutPageState extends State<AboutPage> {
                 style: ElevatedButton.styleFrom(
                   primary: Colors.redAccent,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  scanQr();
+                },
                 child: const Text(
                   'out',
                   style: TextStyle(
