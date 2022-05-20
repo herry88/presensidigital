@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:presensi/model/usermodel.dart';
+import 'package:presensi/screens/detailpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   final User? user;
@@ -20,28 +24,66 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  //getProduct
+  Future<List>? getData() async {
+    final response = await http.get(
+      Uri.parse("https://backendapilaravel-app.herokuapp.com/api/product"),
+    );
+    // print(response.body)['data'];
+    return json.decode(response.body)['data'];
+  }
+
   @override
   void initState() {
     getPref();
-
+    getData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'email: $email',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          )
-        ],
+      body: FutureBuilder<List>(
+        future: getData(),
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? ItemList(list: snapshot.data)
+              : Center(
+                  child: Text("Loading Terus ..."),
+                );
+        },
       ),
     );
+  }
+}
+
+class ItemList extends StatelessWidget {
+  List? list;
+
+  ItemList({Key? key, this.list}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: list == null ? 0 : list!.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DetailPage(
+                    list: list,
+                    index: index,
+                  ),
+                ),
+              );
+            },
+            child: Card(
+              child: ListTile(
+                title: Text(list![index]['nmproduct']),
+              ),
+            ),
+          );
+        });
   }
 }

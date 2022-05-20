@@ -17,12 +17,12 @@ class _AboutPageState extends State<AboutPage> {
   String scan = "Result Scan";
   String time = "00:00:01";
   String now = '';
-  bool? _isMasuk; // true = masuk, false = pulang
+   bool? _isMasuk; // true = masuk, false = pulang
   Timer? timer;
 
   //function ScanQr
   scanQr() async {
-    String? scanResult = await FlutterBarcodeScanner.scanBarcode(
+    String scanResult = await FlutterBarcodeScanner.scanBarcode(
       '#ff6666',
       'Cancel',
       true,
@@ -31,6 +31,22 @@ class _AboutPageState extends State<AboutPage> {
     setState(() {
       scan = scanResult;
     });
+  }
+
+  //scandata
+  senddata() async {
+    var url = 'https://backendapilaravel-app.herokuapp.com/api/scan';
+    var response = await http.post(Uri.parse(url), body: {
+      'qr': scan, 
+      'in': _isMasuk! ? time : '',
+      'out': !_isMasuk! ? time : '',
+    });
+
+    if(response.statusCode == 200){
+      print('sukses');
+    } else{
+      print('gagal');
+    }
   }
 
   @override
@@ -94,6 +110,7 @@ class _AboutPageState extends State<AboutPage> {
                 onPressed: () {
                   //scanQr
                   scanQr();
+                  _isMasuk = true;
                 },
                 child: const Text(
                   'In',
