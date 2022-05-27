@@ -68,7 +68,7 @@ class _DetailPageState extends State<DetailPage> {
                   Text(
                     "Nama Produk : ${widget.list![widget.index]['nmproduct']}",
                     style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                        const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
@@ -85,7 +85,9 @@ class _DetailPageState extends State<DetailPage> {
                   Row(
                     children: [
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          //edit data
+                        },
                         child: Text('Edit Data'),
                       ),
                       const SizedBox(width: 10.0),

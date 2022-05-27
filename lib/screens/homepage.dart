@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:presensi/model/usermodel.dart';
+import 'package:presensi/screens/createpage.dart';
 import 'package:presensi/screens/detailpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -52,6 +53,20 @@ class _HomePageState extends State<HomePage> {
                   child: Text("Loading Terus ..."),
                 );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CreatePage(),
+            ),
+          );
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.orangeAccent,
+        ),
       ),
     );
   }
