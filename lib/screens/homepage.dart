@@ -17,10 +17,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String? email;
+  var token;
   getPref() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+    final key = 'token';
+    final value = pref.getString(key) ?? 0;
+
     setState(() {
       email = pref.getString('email');
+      print(value);
       print(email);
     });
   }
@@ -44,15 +49,23 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List>(
-        future: getData(),
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? ItemList(list: snapshot.data)
-              : Center(
-                  child: Text("Loading Terus ..."),
-                );
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await Future.delayed(
+            const Duration(seconds: 5),
+          );
+          getData();
         },
+        child: FutureBuilder<List>(
+          future: getData(),
+          builder: (context, snapshot) {
+            return snapshot.hasData
+                ? ItemList(list: snapshot.data)
+                : Center(
+                    child: Text("Loading Terus ..."),
+                  );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
