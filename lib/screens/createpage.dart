@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:presensi/helper/databasehelper.dart';
+import 'package:presensi/screens/homepage.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -10,6 +11,15 @@ class CreatePage extends StatefulWidget {
 }
 
 class _CreatePageState extends State<CreatePage> {
+  //panggil functionya dulu
+  DatabaseHelper databaseHelper = DatabaseHelper();
+
+  //deklarasi form
+  TextEditingController nmproduct = TextEditingController();
+  TextEditingController stock = TextEditingController();
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,6 +40,7 @@ class _CreatePageState extends State<CreatePage> {
             Container(
               height: 50.0,
               child: TextField(
+                controller: nmproduct,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   labelText: 'Nama Product',
@@ -49,6 +60,7 @@ class _CreatePageState extends State<CreatePage> {
             Container(
               height: 50.0,
               child: TextField(
+                controller: stock,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: 'Stock',
@@ -68,14 +80,31 @@ class _CreatePageState extends State<CreatePage> {
             Container(
               height: 50.0,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  //function create
+                  databaseHelper.addData(
+                    nmproduct.text.trim(),
+                    stock.text.trim(),
+                  );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>const HomePage(),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   primary: Colors.orangeAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                child: const Text('Simpan Data'),
+                child: const Text(
+                  'Simpan Data',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             )
           ],

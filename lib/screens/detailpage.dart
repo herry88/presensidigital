@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:presensi/helper/databasehelper.dart';
+import 'package:presensi/screens/editpage.dart';
 import 'package:presensi/screens/homepage.dart';
 
 class DetailPage extends StatefulWidget {
@@ -67,8 +68,8 @@ class _DetailPageState extends State<DetailPage> {
                 children: [
                   Text(
                     "Nama Produk : ${widget.list![widget.index]['nmproduct']}",
-                    style:
-                        const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20.0, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
@@ -87,6 +88,14 @@ class _DetailPageState extends State<DetailPage> {
                       ElevatedButton(
                         onPressed: () {
                           //edit data
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => EditPage(
+                                list: widget.list,
+                                index: widget.index,
+                              ),
+                            ),
+                          );
                         },
                         child: Text('Edit Data'),
                       ),
