@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:presensi/helper/databasehelper.dart';
+import 'package:presensi/screens/tabbarpage.dart';
 
 class EditPage extends StatefulWidget {
   List? list;
@@ -10,16 +12,20 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
+  //function edit
+  DatabaseHelper dbHelper = DatabaseHelper();
 
   TextEditingController nmproduct = TextEditingController();
   TextEditingController stock = TextEditingController();
 
   @override
   void initState() {
-    nmproduct = TextEditingController(text: widget.list![widget.index]['nmproduct']);
+    nmproduct =
+        TextEditingController(text: widget.list![widget.index]['nmproduct']);
     stock = TextEditingController(text: widget.list![widget.index]['stock']);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +66,29 @@ class _EditPageState extends State<EditPage> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 30.0,
+            ),
+            Container(
+              height: 50.0,
+              child: ElevatedButton(
+                onPressed: () {
+                  //edit Data
+                  dbHelper.editData(
+                    widget.list![widget.index]['id'],
+                    nmproduct.text.trim(),
+                    stock.text.trim(),
+                  );
+                  //redirect
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => TabbarPage(),
+                    ),
+                  );
+                },
+                child: Text('Edit Data'),
+              ),
+            )
           ],
         ),
       ),
