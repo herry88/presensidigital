@@ -33,7 +33,9 @@ class _HomePageState extends State<HomePage> {
   //getProduct
   Future<List>? getData() async {
     final response = await http.get(
-      Uri.parse("https://backendapilaravel-app.herokuapp.com/api/product"),
+      Uri.parse(
+        "https://backendapilaravel-app.herokuapp.com/api/product",
+      ),
     );
     // print(response.body)['data'];
     return json.decode(response.body)['data'];

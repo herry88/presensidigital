@@ -2,12 +2,13 @@ import 'package:http/http.dart' as http;
 
 class DatabaseHelper {
   // String url = "";
-
+  var token;
   //create Data
   void addData(String nmproduct, String stock) async {
     String myUrl = "https://backendapilaravel-app.herokuapp.com/api/product";
     http.post(Uri.parse(myUrl), headers: {
       "Accept": "application/json",
+      
     }, body: {
       "nmproduct": nmproduct,
       "stock": stock.toString(),
@@ -37,6 +38,7 @@ class DatabaseHelper {
         "https://backendapilaravel-app.herokuapp.com/api/product/$id";
     http.put(Uri.parse(myUrl), headers: {
       "Accept": "application/json",
+      
     }, body: {
       "nmproduct": nmproduct,
       "stock": stock.toString(),
